@@ -1,6 +1,10 @@
 from flask import Flask
+from flask import render_template
 
 from todo import main as todo_routes
+from user import main as user_routes
+
+from utils import log
 
 app = Flask(__name__)
 # 设置 secret_key 来使用 flask 自带的 session
@@ -11,4 +15,29 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 '''
 在 flask 中，模块化路由的功能由 蓝图(Blueprints) 提供
 蓝图可以拥有自己的静态资源路径、模版路径（现在还没涉及）
+用法如下
 '''
+# 注册蓝图
+# 有一个 rul_prefix 可以用来给蓝图中的每个路由加一个前缀
+app.register_blueprint(todo_routes, url_prefix='/todo')
+app.register_blueprint(user_routes)
+
+
+@app.errorhandler(404)
+def error404(e):
+    return render_template('404.html')
+
+
+@app.errorhandler(401)
+def error404(e):
+    return render_template('401.html')
+
+
+# 运行代码
+# 默认端口是 5000
+if __name__ == '__main__':
+    app.run(
+        debug=False,
+        host='0.0.0.0',
+        port=80,
+    )
