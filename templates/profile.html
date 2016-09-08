@@ -3,22 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
+    <style>
+        .center {
+            width: 300px;
+            margin: 300px auto;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        {{ user.id }}
-    </div>
-    <div>
-        {{ user.username }}
-    </div>
-    <form action="/user/update" method="post">
+    <div class="center">
         <div>
-            密码 <input type="text" name="password" placeholder="{{user.password}}">
-            <button class="pure-button pure-button-primary">修改密码</button>
+            {{ user.id }}
         </div>
-    </form>
-    <div>
-        {{ user.password }}
+        <div>
+            {{ user.username }}
+        </div>
+        <form action="/user/update" method="post">
+            <div>
+                密码 <input type="text" name="password" placeholder="{{user.password}}">
+                <button class="pure-button pure-button-primary">修改密码</button>
+            </div>
+        </form>
+        <div>
+            {{ user.password }}
+        </div>
     </div>
 </body>
 </html>

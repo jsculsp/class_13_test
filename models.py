@@ -15,17 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
 db = SQLAlchemy(app)
 
 
-# # 定义一个 Model, 继承自 db.Model
-class Todo(db.Model):
-    __tablename__ = 'todos'
-    # 下面是字段定义
-    id = db.Column(db.Integer, primary_key=True)
-    task = db.Column(db.String())
-    created_time = db.Column(db.Integer, default=0)
-
-    def __repr__(self):
-        return '<ToDo {} {}>'.format(self.id, self.task)
-
+class ModelHelper(object):
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -33,6 +23,22 @@ class Todo(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def __repr__(self):
+        classname = self.__class__.__name__
+        properties = ['{}: ({})'.format(k, v) for k, v in self.__dict__.items()]
+        s = '\n'.join(properties)
+        return '< {}\n{} \n>\n'.format(classname, s)
+
+# # 定义一个 Model, 继承自 db.Model
+class Todo(db.Model, ModelHelper):
+    __tablename__ = 'todos'
+    # 下面是字段定义
+    id = db.Column(db.Integer, primary_key=True)
+    task = db.Column(db.String())
+    created_time = db.Column(db.Integer, default=0)
+    # 定义关系
+    user_id = db.Column(db.Integer)
 
     def __init__(self, form):
         self.task = form.get('task', '')
@@ -42,7 +48,7 @@ class Todo(db.Model):
         return len(self.task) > 0
 
 
-class User(db.Model):
+class User(db.Model, ModelHelper):
     __tablename__ = 'users'
     # 下面是字段定义
     id = db.Column(db.Integer, primary_key=True)
@@ -52,14 +58,6 @@ class User(db.Model):
 
     def __repr__(self):
         return '<ToDo {} {}>'.format(self.id, self.username)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
 
     def __init__(self, form):
         self.username = form.get('username', '')
@@ -79,11 +77,23 @@ class User(db.Model):
             return True
         return False
 
-class Fuck(db.Model):
-    __tablename__ = 'what_the_fucks'
+    def weibos(self):
+        ws = Weibo.query.filter_by(user_id=self.id).all()
+        return ws
+
+class Weibo(db.Model, ModelHelper):
+    __tablename__ = 'weibos'
+    # 下面是字段定义
     id = db.Column(db.Integer, primary_key=True)
-    fuck = db.Column(db.String())
-    fuck_time = db.Column(db.Integer, default=0)
+    content = db.Column(db.String())
+    created_time = db.Column(db.Integer, default=0)
+    # 定义关系
+    user_id = db.Column(db.Integer)
+
+    def __init__(self, form):
+        self.content = form.get('content', '')
+        self.created_time = time.ctime(int(time.time()))
+
 
 if __name__ == '__main__':
     db.drop_all()

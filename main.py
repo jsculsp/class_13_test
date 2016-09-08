@@ -3,6 +3,7 @@ from flask import render_template
 
 from todo import main as todo_routes
 from user import main as user_routes
+from weibo import main as weibo_routes
 
 from utils import log
 
@@ -21,6 +22,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # 有一个 rul_prefix 可以用来给蓝图中的每个路由加一个前缀
 app.register_blueprint(todo_routes, url_prefix='/todo')
 app.register_blueprint(user_routes)
+app.register_blueprint(weibo_routes, url_prefix='/weibo')
 
 
 @app.errorhandler(404)
