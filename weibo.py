@@ -10,6 +10,7 @@ from utils import log
 
 from models import User
 from models import Weibo
+from models import Comment
 
 
 # 创建一个 蓝图对象 并且路由定义在蓝图对象中
@@ -32,7 +33,9 @@ def timeline_view(username):
         abort(404)
     else:
         ws = u.weibos()
-        return render_template('timeline.html', weibos=ws)
+        w = Weibo.query.filter_by(user_id=u.id).first()
+        cs = Comment.query.filter_by(weibo_id=w.id).all()
+        return render_template('timeline.html', weibos=ws, comments=cs)
 
 
 @main.route('/add', methods=['POST'])
@@ -48,40 +51,11 @@ def add():
         abort(401)
 
 
-@main.route('/user/register', methods=['POST'])
-def register():
+@main.route('/comment', methods=['POST'])
+def comment_add():
     form = request.form
-    u = User(form)
-    if u.valid():
-        u.save()
-    else:
-        abort(400)
-    # 蓝图中的 url_for 需要加上蓝图的名字，这里是 user
-    return redirect(url_for('.login_view'))
-
-
-@main.route('/user/login', methods=['POST'])
-def login():
-    form = request.form
-    u = User(form)
-    # 检查 u 是否存在于数据库中，并且用户密码都验证合格
-    user = User.query.filter_by(username=u.username).first()
-    if user is not None and user.validate_login(u):
-        print('登录成功')
-        session['user_id'] = user.id
-        # 蓝图中的 url_for 需要加上蓝图的名字，这里是 user
-        return redirect(url_for('todo.index'))
-    else:
-        abort(404)
-        print('登陆失败')
-
-
-@main.route('/user/update', methods=['POST'])
-def update():
-    u = current_user()
-    password = request.form.get('password', '')
-    if u.change_password(password):
-        print('修改成功！')
-    else:
-        print('用户名密码修改失败！')
-    return redirect(url_for('.profile_view'))
+    c = Comment(form)
+    c.save()
+    w = Weibo.query.get(c.weibo_id)
+    u = User.query.get(w.user_id)
+    return redirect(url_for('.timeline_view', username=u.username))

@@ -4,20 +4,73 @@
     <meta charset="UTF-8">
     <title>注册与登陆</title>
     <link rel="stylesheet" href="/static/css/pure-min.css">
+    <style>
+        .center {
+            width: 300px;
+            margin:20px auto;
+        }
+        .button-middle {
+            width: 100%;
+            height: 35px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-color: dodgerblue;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+        .login-form {
+            margin-bottom: 130px;
+        }
+        .form-input {
+            margin-top: 20px;
+            border-style: solid;
+            border-radius: 3px;
+            border-width: 1px;
+            border-color: lightgray;
+        }
+        .input-wrapper {
+            width: 90%;
+            height: 35px;
+            margin: 5px;
+            border: none;
+            outline: none;
+        }
+        .liang-ju-shi {
+            text-align: center;
+            font-size: 2.5em;
+            color: darkgray;
+            font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <form class="center" action="/user/register" method="post">
-        <input type="text" name="username" placeholder="请输入用户名">
-        <br>
-        <input type="text" name="password" placeholder="请输入密码">
-        <button>注册</button>
-    </form>
-
-    <form action="/user/login" method="post">
-        <input type="text" name="username" placeholder="请输入用户名">
-        <br>
-        <input type="text" name="password" placeholder="请输入密码">
-        <button class="pure-button pure-button-primary" >登陆</button>
-    </form>
+    <div class="center">
+        <form class="login-form" action="/user/register" method="post">
+            <div class="liang-ju-shi">
+                苟利国家生死以
+            </div>
+            <div class="form-input">
+                <input class="input-wrapper" type="text" name="username" placeholder="请输入用户名">
+                <br>
+                <input class="input-wrapper" type="text" name="password" placeholder="请输入密码">
+            </div>
+            <br>
+            <button class="button-middle pure-button pure-button-primary">注册</button>
+        </form>
+        <form class="login-form" action="/user/login" method="post">
+            <div class="liang-ju-shi">
+                岂因祸福避趋之
+            </div>
+            <div class="form-input">
+                <input class="input-wrapper" type="text" name="username" placeholder="请输入用户名">
+                <br>
+                <input class="input-wrapper" type="text" name="password" placeholder="请输入密码">
+                <br>
+            </div>
+            <button class="button-middle pure-button pure-button-primary" >登陆</button>
+        </form>
+    </div>
 </body>
 </html>

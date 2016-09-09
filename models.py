@@ -95,6 +95,19 @@ class Weibo(db.Model, ModelHelper):
         self.created_time = time.ctime(int(time.time()))
 
 
+class Comment(db.Model, ModelHelper):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String())
+    created_time = db.Column(db.Integer, default=0)
+    weibo_id = db.Column(db.Integer)
+
+    def __init__(self, form):
+        self.content = form.get('content', '')
+        self.created_time = time.ctime(int(time.time()))
+        self.weibo_id = form.get('weibo_id', '')
+
+
 if __name__ == '__main__':
     db.drop_all()
     db.create_all()

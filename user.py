@@ -28,7 +28,7 @@ def current_user():
 def login_view():
     u = current_user()
     if u is not None:
-        return redirect(url_for('.profile_view'))
+        return redirect(url_for('weibo.timeline_view', username=u.username))
     return render_template('user_login.html')
 
 
@@ -63,7 +63,7 @@ def login():
         print('登录成功')
         session['user_id'] = user.id
         # 蓝图中的 url_for 需要加上蓝图的名字，这里是 user
-        return redirect(url_for('todo.index'))
+        return redirect(url_for('weibo.timeline_view', username=u.username))
     else:
         abort(404)
         print('登陆失败')
