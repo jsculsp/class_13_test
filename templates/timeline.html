@@ -49,8 +49,12 @@
                 <div class="weibos-style">
                     {{ w.content }} @ {{ w.created_time }}
                 </div>
-                {% for c in comments %}
-                    <div class="comments-style">{{ c.content }} @ {{ c.created_time }}</div>
+                {% for comments in comments_all %}
+                    {% for c in comments %}
+                        {% if c.weibo_id == w.id %}
+                            <div class="comments-style">{{ c.content }} @ {{ c.created_time }}</div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
                 <form class="pure-form clearfix" action="/weibo/comment" method="post">
                     <input type="hidden" name="weibo_id" value="{{ w.id }}">

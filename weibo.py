@@ -37,8 +37,11 @@ def timeline_view(username):
         if w is None:
             return render_template('timeline.html', weibos=ws)
         else:
-            cs = Comment.query.filter_by(weibo_id=w.id).all()
-            return render_template('timeline.html', weibos=ws, comments=cs)
+            cs_all = []
+            for weibo in ws:
+                cs = Comment.query.filter_by(weibo_id=weibo.id).all()
+                cs_all.append(cs)
+            return render_template('timeline.html', weibos=ws, comments_all=cs_all)
 
 
 @main.route('/add', methods=['POST'])
