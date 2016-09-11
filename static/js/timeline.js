@@ -23,13 +23,14 @@ $(document).ready(function(){
                 console.log('成功', arguments)
                 var response = arguments[0]
                 var comment = JSON.parse(response)
-                var content = comment.content
+                var content_add = comment.content
                 var cell = `
                     <div class="gua-comment-cell">
-                        ${content}
+                        ${content_add}
                     </div>
                 `;
                 commentList.append(cell)
+                parent.find('.gua-comment-content')[0].value = '';
 
             },
             error: function() {
