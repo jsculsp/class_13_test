@@ -33,15 +33,10 @@ def timeline_view(username):
         abort(404)
     else:
         ws = u.weibos()
-        w = Weibo.query.filter_by(user_id=u.id).first()
-        if w is None:
-            return render_template('timeline.html', weibos=ws)
-        else:
-            cs_all = []
-            for weibo in ws:
-                cs = Comment.query.filter_by(weibo_id=weibo.id).all()
-                cs_all.append(cs)
-            return render_template('timeline.html', weibos=ws, comments_all=cs_all)
+        for w in ws:
+            w.load_comments()
+        return render_template('timeline.html', weibos=ws)
+
 
 
 @main.route('/add', methods=['POST'])
@@ -59,9 +54,12 @@ def add():
 
 @main.route('/comment', methods=['POST'])
 def comment_add():
-    form = request.form
-    c = Comment(form)
-    c.save()
-    w = Weibo.query.get(c.weibo_id)
-    u = User.query.get(w.user_id)
-    return redirect(url_for('.timeline_view', username=u.username))
+    u = current_user()
+    if u is not None:
+        form = request.form
+        c = Comment(form)
+        c.user_id = u.id
+        c.save()
+        return redirect(url_for('.timeline_view', username=u.username))
+    else:
+        abort(404)

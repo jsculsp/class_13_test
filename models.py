@@ -93,6 +93,10 @@ class Weibo(db.Model, ModelHelper):
     def __init__(self, form):
         self.content = form.get('content', '')
         self.created_time = time.ctime(int(time.time()))
+        self.comments = []
+
+    def load_comments(self):
+        self.comments = Comment.query.filter_by(weibo_id=self.id).all()
 
 
 class Comment(db.Model, ModelHelper):
@@ -101,6 +105,7 @@ class Comment(db.Model, ModelHelper):
     content = db.Column(db.String())
     created_time = db.Column(db.Integer, default=0)
     weibo_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)
 
     def __init__(self, form):
         self.content = form.get('content', '')
