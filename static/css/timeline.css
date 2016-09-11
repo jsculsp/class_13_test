@@ -1,0 +1,60 @@
+body {
+            font-size: 20px;
+            font-family: "Arial","Microsoft YaHei","华文彩云","宋体",sans-serif;
+      }
+input, button {
+    font-size: 15px;
+    font-family: "Arial","Microsoft YaHei","微软雅黑","宋体",sans-serif;
+}
+.post-weibo {
+    margin-left: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.gua-weibo-cell {
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #aba9a9;
+    margin: 10px 5px;
+    padding: 5px;
+    background: #1d52ef;
+}
+.gua-weibo-content {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+.gua-comment-list {
+    background: white;
+    border-radius: 5px;
+    border-style: solid;
+    padding: 5px;
+    border: 0;
+    margin: 10px 0;
+}
+.gua-comment-cell {
+    padding: 5px;
+}
+.gua-comment-cell + .gua-comment-cell {
+    border-top-style: solid;
+    border-top-width: 2px;
+    border-top-color: lightgray;
+}
+.gua-comment-list:nth-child(0) {
+    background: red;
+}
+input {
+    outline: none;
+    border: none;
+    background: white;
+    border-radius: 5px;
+    height: 30px;
+    padding: 0 10px;
+}
+button {
+    border: none;
+    background: #b7b6ec;
+    height: 30px;
+    border-radius: 5px;
+    width: 100px;
+}

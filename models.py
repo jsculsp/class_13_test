@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 import time
+import json
 
 from utils import log
 
@@ -112,6 +113,15 @@ class Comment(db.Model, ModelHelper):
         self.created_time = time.ctime(int(time.time()))
         self.weibo_id = form.get('weibo_id', '')
 
+    def json(self):
+        d = {
+            'id': self.id,
+            'content': self.content,
+            'created_time': self.created_time,
+            'weibo_id': self.weibo_id,
+            'user_id': self.user_id,
+        }
+        return json.dumps(d, ensure_ascii=False)
 
 if __name__ == '__main__':
     db.drop_all()
