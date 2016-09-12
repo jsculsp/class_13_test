@@ -59,7 +59,7 @@ def login():
     u = User(form)
     # 检查 u 是否存在于数据库中，并且用户密码都验证合格
     user = User.query.filter_by(username=u.username).first()
-    if user is not None and user.validate_login(u):
+    if u.validate_login(user):
         print('登录成功')
         session['user_id'] = user.id
         # 蓝图中的 url_for 需要加上蓝图的名字，这里是 user

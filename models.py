@@ -69,7 +69,7 @@ class User(db.Model, ModelHelper):
         return len(self.username) > 2 and len(self.password) > 2
 
     def validate_login(self, u):
-        return u.username == self.username and u.password == self.password
+        return u is not None and u.username == self.username and u.password == self.password
 
     def change_password(self, password):
         if len(password) > 2:
