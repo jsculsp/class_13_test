@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager
 
 import time
 import json
@@ -14,6 +16,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
 
 db = SQLAlchemy(app)
+manager = Manager(app)
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
 
 
 class ModelHelper(object):
@@ -82,6 +87,7 @@ class User(db.Model, ModelHelper):
         ws = Weibo.query.filter_by(user_id=self.id).all()
         return ws
 
+
 class Weibo(db.Model, ModelHelper):
     __tablename__ = 'weibos'
     # 下面是字段定义
@@ -124,6 +130,4 @@ class Comment(db.Model, ModelHelper):
         return json.dumps(d, ensure_ascii=False)
 
 if __name__ == '__main__':
-    db.drop_all()
-    db.create_all()
-    print('rebuild database')
+    manager.run()
